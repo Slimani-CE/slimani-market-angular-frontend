@@ -1,0 +1,92 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Slimani Market</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/customers">Customers</a>
+        </li>
+        <li class="nav-item" *ngIf="roles.includes('ADMIN')">
+          <a class="nav-link" routerLink="/products">Products</a>
+        </li>
+      </ul>
+      <ul class="navbar">
+        <div class="dropdown dropstart">
+          <a class="btn btn-outline-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+              <span *ngIf="profile; else not_logged_in">
+                {{profile.username}}
+              </span>
+              <ng-template #not_logged_in>
+                Not Logged
+              </ng-template>
+          </a>
+
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li *ngIf="profile; else login_button">
+              <a class="dropdown-item text-danger" (click)="logout()">Logout</a>
+              <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#profileDataModal">
+                Profile
+              </a>
+            </li>
+            <ng-template #login_button>
+              <li>
+                <a class="dropdown-item" (click)="login()">Login</a>
+              </li>
+            </ng-template>
+          </ul>
+        </div>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Modal -->
+<div class="modal fade" id="profileDataModal" tabindex="-1" aria-labelledby="profileDataModalLabel" aria-hidden="true" *ngIf="profile">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="profileDataModalLabel">Profile Information</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <div class="alert alert-warning" role="alert" *ngIf="!profile.emailVerified">
+            Your email address is not verified !
+          </div>
+          <label for="emailDataDisplayInput" class="form-label">Email address</label>
+          <input type="email" class="form-control" readonly value="{{profile.email}}" id="emailDataDisplayInput">
+        </div>
+
+        <div class="mb-3">
+          <label for="userFirstNameDataDisplayInput" class="form-label">Email address</label>
+          <input type="text" class="form-control" readonly value="{{profile.firstName}}" id="userFirstNameDataDisplayInput">
+        </div>
+
+        <div class="mb-3">
+          <label for="userLastNameDataDisplayInput" class="form-label">Email address</label>
+          <input type="text" class="form-control" readonly value="{{profile.lastName}}" id="userLastNameDataDisplayInput">
+        </div>
+
+        <ul class="list-group mb-3">
+          <li class="list-group-item active" aria-current="true">User Roles</li>
+          <li class="list-group-item" *ngFor="let role of roles">
+            {{role}}
+          </li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<router-outlet>
+
+</router-outlet>
